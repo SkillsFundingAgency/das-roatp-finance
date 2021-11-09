@@ -135,7 +135,7 @@ namespace SFA.DAS.RoatpFinance.Web
 
         private void AddAntiforgery(IServiceCollection services)
         {
-            services.AddAntiforgery(options => options.Cookie = new CookieBuilder() { Name = ".RoatpAssessor.Staff.AntiForgery", HttpOnly = false });
+            services.AddAntiforgery(options => options.Cookie = new CookieBuilder() { Name = ".RoatpFinance.Staff.AntiForgery", HttpOnly = false });
         }
 
         private void ConfigureHttpClients(IServiceCollection services)
