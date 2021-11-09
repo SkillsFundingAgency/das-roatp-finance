@@ -104,4 +104,4 @@ Data:
 
 
 ## 🐛 Known Issues
-* Clarification process not working
+* None
