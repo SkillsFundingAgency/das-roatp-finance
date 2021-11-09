@@ -29,7 +29,7 @@ namespace SFA.DAS.RoatpFinance.Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("https://localhost:44350") // TODO: change port and also do it in launchSettings.json
+                .UseUrls("https://localhost:45669")
                 .UseNLog();
     }
 }

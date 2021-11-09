@@ -3,8 +3,8 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44350",
-      "sslPort": 44350
+      "applicationUrl": "https://localhost:45669",
+      "sslPort": 45669
     }
   },
   "profiles": {
@@ -18,7 +18,7 @@
     "SFA.DAS.RoatpFinance.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:44350",
+      "applicationUrl": "https://localhost:45669",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
