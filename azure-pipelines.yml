@@ -6,11 +6,13 @@ trigger:
 
 variables:
 - name: SolutionBaseName
-  value: SFA.DAS.RoatpFinance.Web
+  value: SFA.DAS.RoatpFinance
 - name: BuildConfiguration
   value: release
 - name: BuildPlatform
   value: any cpu
+- name: Deploy
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'))]
 
 resources:
   repositories:
@@ -41,6 +43,7 @@ stages:
 - stage: Deploy_AT
   dependsOn: Build
   displayName: Deploy to AT
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
@@ -54,6 +57,7 @@ stages:
 - stage: Deploy_TEST
   dependsOn: Build
   displayName: Deploy to TEST
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
@@ -67,6 +71,7 @@ stages:
 - stage: Deploy_TEST2
   dependsOn: Build
   displayName: Deploy to TEST2
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: TEST2 DevTest Shared Resources
@@ -80,6 +85,7 @@ stages:
 - stage: Deploy_PP
   dependsOn: Build
   displayName: Deploy to PP
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
