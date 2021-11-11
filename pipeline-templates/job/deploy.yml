@@ -40,4 +40,4 @@ jobs:
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
             AppServiceName: $(AppServiceName)
-            DeploymentPackagePath: $(Pipeline.Workspace)/RoatpFinance/$(SolutionBaseName).zip
+            DeploymentPackagePath: $(Pipeline.Workspace)/RoatpFinance/$(SolutionBaseName).Web.zip
