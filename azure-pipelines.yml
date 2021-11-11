@@ -13,6 +13,8 @@ variables:
   value: any cpu
 - name: Deploy
   value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'))]
+- group: RELEASE Management Resources
+- group: RELEASE das-roatp-finance
 
 resources:
   repositories:
