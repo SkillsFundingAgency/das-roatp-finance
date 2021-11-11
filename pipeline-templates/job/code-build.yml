@@ -1,9 +1,10 @@
 parameters:
   SolutionBaseName:
-  BuildConfiguration:
 
 jobs:
 - job: CodeBuild
+  pool:
+    name: DAS - Continuous Integration Agents
   variables:
   - group: BUILD Management Resources
   steps:
@@ -19,7 +20,7 @@ jobs:
         command: publish
         publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
         projects: src/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.csproj
-        arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
+        arguments: -o $(build.artifactstagingdirectory)/publish -c release --no-build
         modifyOutputPath: true
         zipAfterPublish: true
 
@@ -32,7 +33,7 @@ jobs:
         OverWrite: true
 
     - task: PublishPipelineArtifact@1
-      displayName: Publish Artifact drop
+      displayName: Publish Artifact - RoatpFinance
       inputs:
         targetPath: $(build.artifactstagingdirectory)/publish
-        artifactName: drop
+        artifactName: RoatpFinance
