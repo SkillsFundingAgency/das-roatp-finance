@@ -1,0 +1,19 @@
+﻿@model SFA.DAS.RoatpFinance.Web.ViewModels.RoatpFinancialDashboardViewModel
+
+<ul class="govuk-tabs__list">
+    <li class="govuk-tabs__list-item @(Model.SelectedTab == "OpenApplications" ? "govuk-tabs__list-item--selected" : "")">
+        <a class="govuk-tabs__tab" asp-action="OpenApplications" asp-controller="RoatpFinancial" asp-route-searchTerm="@Model.SearchTerm">
+            Current applications (@Model.StatusCounts.ApplicationsOpen)
+        </a>
+    </li>
+    <li class="govuk-tabs__list-item @(Model.SelectedTab == "ClarificationApplications" ? "govuk-tabs__list-item--selected" : "")">
+        <a class="govuk-tabs__tab" asp-action="ClarificationApplications" asp-controller="RoatpFinancial" asp-route-searchTerm="@Model.SearchTerm">
+            Clarifications (@Model.StatusCounts.ApplicationsWithClarification)
+        </a>
+    </li>
+    <li class="govuk-tabs__list-item @(Model.SelectedTab == "ClosedApplications" ? "govuk-tabs__list-item--selected" : "")">
+        <a class="govuk-tabs__tab" asp-action="ClosedApplications" asp-controller="RoatpFinancial" asp-route-searchTerm="@Model.SearchTerm">
+            Outcome (@Model.StatusCounts.ApplicationsClosed)
+        </a>
+    </li>
+</ul>

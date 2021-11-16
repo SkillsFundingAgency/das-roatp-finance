@@ -1,9 +1,10 @@
 parameters:
   SolutionBaseName:
-  BuildConfiguration:
 
 jobs:
 - job: CodeBuild
+  pool:
+    name: DAS - Continuous Integration Agents
   variables:
   - group: BUILD Management Resources
   steps:
@@ -14,12 +15,12 @@ jobs:
     - template: azure-pipelines-templates/build/step/dependency-check.yml@das-platform-building-blocks
 
     - task: DotNetCoreCLI@2
-      displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}
+      displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}.Web
       inputs:
         command: publish
         publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
-        projects: src/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.csproj
-        arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
+        projects: src/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.Web/${{ parameters.SolutionBaseName }}.Web.csproj
+        arguments: -o $(build.artifactstagingdirectory)/publish -c release --no-build
         modifyOutputPath: true
         zipAfterPublish: true
 
@@ -32,7 +33,7 @@ jobs:
         OverWrite: true
 
     - task: PublishPipelineArtifact@1
-      displayName: Publish Artifact drop
+      displayName: Publish Artifact - RoatpFinance
       inputs:
         targetPath: $(build.artifactstagingdirectory)/publish
-        artifactName: drop
+        artifactName: RoatpFinance
