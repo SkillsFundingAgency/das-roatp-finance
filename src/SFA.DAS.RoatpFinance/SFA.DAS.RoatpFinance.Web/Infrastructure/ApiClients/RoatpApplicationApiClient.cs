@@ -82,7 +82,7 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
             var fileName = string.Empty;
             var content = new MultipartFormDataContent
             {
-                { new StringContent(userId), "userId" }
+                { new StringContent(userId), "UserId" }
             };
 
             if (clarificationFiles != null && clarificationFiles.Any())
@@ -102,7 +102,7 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
 
                 try
                 {
-                    var response = await PostResponse($"/Clarification/Applications/{applicationId}/Upload", content);
+                    var response = await _httpClient.PostAsync($"/Clarification/Applications/{applicationId}/Upload", content);
 
                     return response.StatusCode == HttpStatusCode.OK;
                 }
