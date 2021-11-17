@@ -87,6 +87,7 @@ stages:
 - stage: Deploy_DEMO
   dependsOn: Build
   displayName: Deploy to DEMO
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: DEMO DevTest Shared Resources
