@@ -343,7 +343,7 @@
                                         <th scope="row" class="govuk-table__header">@file.Filename</th>
                                         <td class="govuk-table__cell govuk-table__cell--numeric">
                                             <button class="das-button--inline-link" data-module="govuk-button"
-                                                    data-prevent-double-click="true" name="removeClarificationFile"
+                                                    data-disable-on-submit="true" name="removeClarificationFile"
                                                     value="@file.Filename">
                                                 Remove
                                             </button>
@@ -370,7 +370,7 @@
                                    accept=".pdf,application/pdf" />
                         </div>
                         <button class="govuk-button govuk-button--secondary" data-module="govuk-button"
-                                data-prevent-double-click="true" name="submitClarificationFiles">
+                                data-disable-on-submit="true" name="submitClarificationFiles">
                             Upload File
                         </button>
                     }
@@ -630,7 +630,7 @@
                     </div>
                 </div>
 
-                <button class="govuk-button" data-module="govuk-button" data-prevent-double-click="true"
+                <button class="govuk-button" data-module="govuk-button" data-disable-on-submit="true"
                         name="submitClarificationOutcome">
                     Save outcome
                 </button>
@@ -638,3 +638,41 @@
         </div>
     </div>
 </main>
+
+<script>
+    // For this page only!
+    (function (global) {
+        "use strict";
+
+        var DASFrontend = global.DASFrontend || {};
+
+        DASFrontend.disableOnSubmit = {
+            buttonsToDisable: document.querySelectorAll(
+                "[data-disable-on-submit='true']"
+            ),
+
+            init: function () {
+                if (!this.buttonsToDisable.length) return;
+                document.addEventListener("click", this.disableButton);
+            },
+
+            disableButton: function (event) {
+                if (event.target.type !== "submit") return;
+                if (event.target.dataset.disableOnSubmit !== "true") return;
+
+                var button = DASFrontend.disableOnSubmit.buttonsToDisable;
+
+                setTimeout(function () {
+                    for (var i = 0; i < button.length; i++) {
+                        button[i].disabled = true;
+                    }
+                }, 0);
+            },
+        };
+
+        global.DASFrontend = DASFrontend;
+    })(window);
+
+    window.DASFrontend.disableOnSubmit.init();
+
+</script>
