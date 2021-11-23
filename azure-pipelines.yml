@@ -12,7 +12,7 @@ variables:
 - name: BuildPlatform
   value: any cpu
 - name: Deploy
-  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'))]
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 - group: RELEASE Management Resources
 - group: RELEASE das-roatp-finance
 
@@ -59,7 +59,6 @@ stages:
 - stage: Deploy_TEST
   dependsOn: Build
   displayName: Deploy to TEST
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
@@ -73,7 +72,6 @@ stages:
 - stage: Deploy_TEST2
   dependsOn: Build
   displayName: Deploy to TEST2
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: TEST2 DevTest Shared Resources
@@ -87,7 +85,6 @@ stages:
 - stage: Deploy_DEMO
   dependsOn: Build
   displayName: Deploy to DEMO
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: DEMO DevTest Shared Resources
@@ -101,7 +98,6 @@ stages:
 - stage: Deploy_PP
   dependsOn: Build
   displayName: Deploy to PP
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
@@ -110,4 +106,31 @@ stages:
     parameters:
       Environment: PP
       ServiceConnection: SFA-DIG-PreProd-ARM
+      AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
+
+- stage: Deploy_PROD
+  dependsOn: Build
+  displayName: Deploy to PROD
+  variables:
+  - group: PROD Management Resources
+  - group: PROD Shared Resources
+  - group: PROD das-roatp-finance
+  jobs:
+  - template: pipeline-templates/job/deploy.yml
+    parameters:
+      Environment: PROD
+      ServiceConnection: SFA-DIG-Prod-ARM
+      AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
+
+- stage: Deploy_MO
+  dependsOn: Build
+  displayName: Deploy to MO
+  variables:
+  - group: MO Management Resources
+  - group: MO Shared Resources
+  jobs:
+  - template: pipeline-templates/job/deploy.yml
+    parameters:
+      Environment: MO
+      ServiceConnection: SFA-ASM-ModelOffice-ARM
       AppRoleAssignmentsServiceConnection: das-app-role-assignments-FCS
