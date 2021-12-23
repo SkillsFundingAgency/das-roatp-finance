@@ -30,6 +30,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SFA.DAS.RoatpFinance.Web.Extensions;
 
 namespace SFA.DAS.RoatpFinance.Web
 {
@@ -197,6 +198,7 @@ namespace SFA.DAS.RoatpFinance.Web
             app.UseRequestLocalization();
             app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
             app.UseSecurityHeaders();
+            app.UseMiddleware<SecurityHeadersMiddleware>();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseHealthChecks("/health");
