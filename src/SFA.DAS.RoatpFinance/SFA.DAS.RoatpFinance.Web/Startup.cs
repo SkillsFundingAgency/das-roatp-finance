@@ -26,11 +26,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using SFA.DAS.RoatpFinance.Web.Extensions;
+using Microsoft.Extensions.Primitives;
 
 namespace SFA.DAS.RoatpFinance.Web
 {
@@ -198,7 +196,14 @@ namespace SFA.DAS.RoatpFinance.Web
             app.UseRequestLocalization();
             app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
             app.UseSecurityHeaders();
-            app.UseMiddleware<SecurityHeadersMiddleware>();
+            app.Use(async (context, next) =>
+            {
+                if (!context.Response.Headers.ContainsKey("X-Permitted-Cross-Domain-Policies"))
+                {
+                    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", new StringValues("none"));
+                }
+                await next();
+            });
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseHealthChecks("/health");
