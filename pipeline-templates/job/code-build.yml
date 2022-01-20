@@ -4,7 +4,7 @@ parameters:
 jobs:
 - job: CodeBuild
   pool:
-    name: DAS - Continuous Integration Agents
+    name: DAS - Continuous Integration Beta
   variables:
   - group: BUILD Management Resources
   steps:
