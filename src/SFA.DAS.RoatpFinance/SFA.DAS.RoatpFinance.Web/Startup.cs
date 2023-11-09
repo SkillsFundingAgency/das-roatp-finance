@@ -136,10 +136,10 @@ namespace SFA.DAS.RoatpFinance.Web
             if (ApplicationConfiguration.UseDfeSignIn)
             {
                 services.AddAndConfigureDfESignInAuthentication(_configuration,
-                    "SFA.DAS.ProviderApprenticeshipService",
+                    $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(CustomServiceRole),
                     ClientName.ServiceAdmin,
-                    "/signout",
+                    "/SignOut",
                     "");
             }
             else
