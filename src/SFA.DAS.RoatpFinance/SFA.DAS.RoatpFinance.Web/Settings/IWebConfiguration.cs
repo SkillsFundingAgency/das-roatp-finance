@@ -17,5 +17,7 @@ namespace SFA.DAS.RoatpFinance.Web.Settings
         ManagedIdentityApiAuthentication QnaApiAuthentication { get; set; }
 
         string EsfaAdminServicesBaseUrl { get; set; }
+        
+        bool UseDfeSignIn { get; set; }
     }
 }
