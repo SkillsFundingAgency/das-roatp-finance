@@ -5,26 +5,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using SFA.DAS.RoatpFinance.Web.Settings;
 
 namespace SFA.DAS.RoatpFinance.Web.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
+        private readonly IWebConfiguration _webConfiguration;
 
-        public AccountController(ILogger<AccountController> logger)
+        public AccountController(ILogger<AccountController> logger, IWebConfiguration webConfiguration)
         {
             _logger = logger;
+            _webConfiguration = webConfiguration;
         }
 
         [HttpGet]
         public IActionResult SignIn()
         {
+            var challengeScheme = _webConfiguration.UseDfeSignIn
+                ? OpenIdConnectDefaults.AuthenticationScheme
+                : WsFederationDefaults.AuthenticationScheme;
             _logger.LogInformation("Start of Sign In");
             var redirectUrl = Url.Action("PostSignIn", "Account");
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
-                WsFederationDefaults.AuthenticationScheme);
+                challengeScheme);
         }
 
         [HttpGet]
@@ -53,11 +60,20 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
             {
                 Response.Cookies.Delete(cookie);
             }
+            
+            var authScheme = _webConfiguration.UseDfeSignIn
+                ? OpenIdConnectDefaults.AuthenticationScheme
+                : WsFederationDefaults.AuthenticationScheme;
 
             return SignOut(
-                new AuthenticationProperties { RedirectUri = callbackUrl },
+                new AuthenticationProperties
+                {
+                    RedirectUri = callbackUrl,
+                    AllowRefresh = true
+                },
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                WsFederationDefaults.AuthenticationScheme);
+                authScheme);
+
         }
 
         [HttpGet]
