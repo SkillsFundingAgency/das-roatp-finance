@@ -6,6 +6,8 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.AdminService.Common.Testing.MockedObjects;
 using SFA.DAS.RoatpFinance.Web.Controllers;
+using SFA.DAS.RoatpFinance.Web.Settings;
+using SFA.DAS.RoatpFinance.Web.ViewModels.Errors;
 
 namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
 {
@@ -17,7 +19,11 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
         [SetUp]
         public void Setup()
         {
-            _controller = new AccountController(Mock.Of<ILogger<AccountController>>())
+            _controller = new AccountController(Mock.Of<ILogger<AccountController>>(), new WebConfiguration
+            {
+                UseDfeSignIn = true,
+                 DfESignInServiceHelpUrl = "test"
+            })
             {
                 ControllerContext = MockedControllerContext.Setup(),
                 Url = Mock.Of<IUrlHelper>()
@@ -70,6 +76,10 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
 
             Assert.That(result, Is.Not.Null);
             Assert.AreEqual("AccessDenied", result.ViewName);
+            var actualModel = result.Model as Error403ViewModel;
+            Assert.NotNull(actualModel);
+            Assert.True(actualModel.UseDfESignIn);
+            Assert.AreEqual("test", actualModel.HelpPageLink);
         }
     }
 }

@@ -27,5 +27,6 @@ namespace SFA.DAS.RoatpFinance.Web.Settings
         public string EsfaAdminServicesBaseUrl { get; set; }
         
         public bool UseDfeSignIn { get; set; }
+        public string DfESignInServiceHelpUrl { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using SFA.DAS.RoatpFinance.Web.Settings;
+using SFA.DAS.RoatpFinance.Web.ViewModels.Errors;
 
 namespace SFA.DAS.RoatpFinance.Web.Controllers
 {
@@ -93,7 +94,13 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                 _logger.LogError($"AccessDenied - User '{userName}' does not have a valid role. They have the following roles: '{string.Join(",", roles)}'");
             }
 
-            return View("AccessDenied");
+            var model = new Error403ViewModel
+            {
+                UseDfESignIn = _webConfiguration.UseDfeSignIn,
+                HelpPageLink = _webConfiguration.DfESignInServiceHelpUrl
+            };
+
+            return View("AccessDenied", model);
         }
     }
 }
