@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,15 +16,15 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
     public class AccountControllerTests
     {
         private AccountController _controller;
+        private Mock<IWebConfiguration> _configurationMock;
 
         [SetUp]
         public void Setup()
         {
-            _controller = new AccountController(Mock.Of<ILogger<AccountController>>(), new WebConfiguration
-            {
-                UseDfeSignIn = true,
-                 DfESignInServiceHelpUrl = "test"
-            })
+            _configurationMock = new Mock<IWebConfiguration>();
+            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
+            _configurationMock.Setup(x => x.DfESignInServiceHelpUrl).Returns("test");
+            _controller = new AccountController(Mock.Of<ILogger<AccountController>>(), _configurationMock.Object)
             {
                 ControllerContext = MockedControllerContext.Setup(),
                 Url = Mock.Of<IUrlHelper>()
@@ -33,11 +34,25 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
         [Test]
         public void SignIn_returns_expected_ChallengeResult()
         {
+            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(false);
+            
             var result = _controller.SignIn() as ChallengeResult;
 
             Assert.That(result, Is.Not.Null);
             CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
             CollectionAssert.Contains(result.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
+        }
+        
+        [Test]
+        public void SignIn_returns_expected_ChallengeResult_DfeSignIn()
+        {
+            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
+            
+            var result = _controller.SignIn() as ChallengeResult;
+
+            Assert.That(result, Is.Not.Null);
+            CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
+            CollectionAssert.Contains(result.AuthenticationSchemes, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         [Test]
@@ -50,13 +65,27 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
         }
 
         [Test]
-        public void SignOut_returns_expected_SignOutResult()
+        public void SignOut_returns_expected_SignOutResult_For_Pirean()
         {
+            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(false);
+                
             var result = _controller.SignOut() as SignOutResult;
 
             Assert.That(result, Is.Not.Null);
             CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
             CollectionAssert.Contains(result.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
+            CollectionAssert.Contains(result.AuthenticationSchemes, CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+        [Test]
+        public void SignOut_returns_expected_SignOutResult_For_DfeSignIn()
+        {
+            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
+                
+            var result = _controller.SignOut() as SignOutResult;
+
+            Assert.That(result, Is.Not.Null);
+            CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
+            CollectionAssert.Contains(result.AuthenticationSchemes, OpenIdConnectDefaults.AuthenticationScheme);
             CollectionAssert.Contains(result.AuthenticationSchemes, CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
