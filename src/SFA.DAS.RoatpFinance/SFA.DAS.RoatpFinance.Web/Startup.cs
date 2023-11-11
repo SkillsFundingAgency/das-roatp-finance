@@ -138,7 +138,7 @@ namespace SFA.DAS.RoatpFinance.Web
                 services.AddAndConfigureDfESignInAuthentication(_configuration,
                     $"{typeof(Startup).Assembly.GetName().Name}.Auth",
                     typeof(CustomServiceRole),
-                    ClientName.ServiceAdmin,
+                    ClientName.RoatpServiceAdmin,
                     "/SignOut",
                     "");
             }
