@@ -18,7 +18,7 @@ namespace SFA.DAS.RoatpFinance.Web.StartupExtensions
                 var redis = ConnectionMultiplexer.Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
                 services.AddDataProtection()
-                    .SetApplicationName("das-roatp-finance")
+                    .SetApplicationName("das-admin-service-web")
                     .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
             }
             return services;
