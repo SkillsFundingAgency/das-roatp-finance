@@ -4,8 +4,3 @@
 azure-pipelines.yml     @SkillsFundingAgency/das-platform-engineering
 /pipeline-templates/    @SkillsFundingAgency/das-platform-engineering
 GitVersion.yml          @SkillsFundingAgency/das-platform-engineering 
-
-# CODEOWNERS file for das-roatp-finance
-# The following users will be automatically added as Reviewers to all PRs.
-
-* @MarkFCain @MAli99 @DevenKShah @raviudari01
