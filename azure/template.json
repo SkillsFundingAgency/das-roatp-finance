@@ -60,7 +60,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.RoatpFinance"
+        "configNames": "SFA.DAS.RoatpFinance:WebConfiguration,SFA.DAS.Provider.DfeSignIn"
     },
     "resources": [
         {
@@ -152,6 +152,10 @@
                                 {
                                     "name": "EnvironmentName",
                                     "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
                                 },
                                 {
                                     "name": "ConfigurationStorageConnectionString",
