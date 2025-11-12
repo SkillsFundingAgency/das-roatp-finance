@@ -9,7 +9,6 @@ using System.Linq;
 
 namespace SFA.DAS.RoatpFinance.Web.Validators
 {
-    // TODO: Move to AbstractValidator
     public class RoatpFinancialClarificationViewModelValidator : IRoatpFinancialClarificationViewModelValidator
     {
         private const long MaxFileSizeInBytes = 5 * 1024 * 1024;

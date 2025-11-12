@@ -30,20 +30,22 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         private readonly IRoatpApplicationApiClient _applyApiClient;
         private readonly IQnaApiClient _qnaApiClient;
         private readonly ISearchTermValidator _searchTermValidator;
+        private readonly IRoatpFinancialApplicationViewModelValidator _applicationValidator;
         private readonly IRoatpFinancialClarificationViewModelValidator _clarificationValidator;
         private readonly ICsvExportService _csvExportService;
 
-        public RoatpFinancialController(IRoatpApplicationApiClient applyApiClient, IQnaApiClient qnaApiClient, ISearchTermValidator searchTermValidator, IRoatpFinancialClarificationViewModelValidator clarificationValidator, ICsvExportService csvExportService)
+        public RoatpFinancialController(IRoatpApplicationApiClient applyApiClient, IQnaApiClient qnaApiClient, ISearchTermValidator searchTermValidator, IRoatpFinancialClarificationViewModelValidator clarificationValidator, ICsvExportService csvExportService, IRoatpFinancialApplicationViewModelValidator applicationValidator)
         {
             _applyApiClient = applyApiClient;
             _searchTermValidator = searchTermValidator;
             _clarificationValidator = clarificationValidator;
             _csvExportService = csvExportService;
+            _applicationValidator = applicationValidator;
             _qnaApiClient = qnaApiClient;
         }
 
         [HttpGet("/Roatp/Financial/Current")]
-        public async Task<IActionResult> OpenApplications([StringTrim] string? searchTerm, string? sortColumn, string? sortOrder, int page = 1)
+        public async Task<IActionResult> OpenApplications([StringTrim] string searchTerm, string sortColumn, string sortOrder, int page = 1)
         {
             ValidateSearchTerm(searchTerm);
 
@@ -80,7 +82,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         }
 
         [HttpGet("/Roatp/Financial/Clarification")]
-        public async Task<IActionResult> ClarificationApplications([StringTrim] string? searchTerm, string? sortColumn, string? sortOrder, int page = 1)
+        public async Task<IActionResult> ClarificationApplications([StringTrim] string searchTerm, string sortColumn, string sortOrder, int page = 1)
         {
             ValidateSearchTerm(searchTerm);
 
@@ -101,7 +103,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         }
 
         [HttpGet("/Roatp/Financial/Outcome")]
-        public async Task<IActionResult> ClosedApplications([StringTrim] string? searchTerm, string? sortColumn, string? sortOrder, int page = 1)
+        public async Task<IActionResult> ClosedApplications([StringTrim] string searchTerm, string sortColumn, string sortOrder, int page = 1)
         {
             ValidateSearchTerm(searchTerm);
 
@@ -121,7 +123,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
             return View("~/Views/Financial/ClosedApplications.cshtml", viewmodel);
         }
 
-        private void ValidateSearchTerm(string? searchTerm)
+        private void ValidateSearchTerm(string searchTerm)
         {
             if (searchTerm != null)
             {
@@ -145,6 +147,14 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
             }
 
             var vm = await CreateRoatpFinancialApplicationViewModel(application);
+
+            var validationResponse = _applicationValidator.Validate(vm);
+
+            if (validationResponse.Errors.Count > 0)
+            {
+                vm.ErrorMessages = validationResponse.Errors
+                    .Where(x => x.Field != "FinancialReviewDetails.SelectedGrade").ToList();
+            }
 
             var contact = await _applyApiClient.GetContactForApplication(application.ApplicationId);
             vm.ApplicantEmailAddress = contact?.Email;
@@ -184,7 +194,9 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                 return RedirectToAction(nameof(OpenApplications));
             }
 
-            if (ModelState.IsValid)
+            var validationResponse = _applicationValidator.Validate(vm);
+
+            if (validationResponse.Errors.Count == 0)
             {
                 var financialReviewDetails = new FinancialReviewDetails
                 {
@@ -206,6 +218,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                 newvm.InadequateComments = vm.InadequateComments;
                 newvm.InadequateExternalComments = vm.InadequateExternalComments;
                 newvm.ClarificationComments = vm.ClarificationComments;
+                newvm.ErrorMessages = validationResponse.Errors;
 
                 // For now, only replace selected grade with whatever was selected
                 if (vm.FinancialReviewDetails != null)
@@ -471,7 +484,9 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
             var financialSections = await GetFinancialSections(application);
 
             var financialReviewDetails = await _applyApiClient.GetFinancialReviewDetails(application.ApplicationId);
-            return new RoatpFinancialApplicationViewModel(application, financialReviewDetails, parentCompanySection, activelyTradingSection, organisationTypeSection, financialSections);
+            var viewModel = new RoatpFinancialApplicationViewModel(application, financialReviewDetails, parentCompanySection, activelyTradingSection, organisationTypeSection, financialSections);
+            
+            return viewModel;
         }
 
         private async Task<Section> GetParentCompanySection(Guid applicationId)

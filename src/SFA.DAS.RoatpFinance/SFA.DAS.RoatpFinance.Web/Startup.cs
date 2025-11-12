@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.WsFederation;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +28,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using FluentValidation;
 using Microsoft.Extensions.Primitives;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.DfESignIn.Auth.AppStart;
@@ -105,13 +105,15 @@ namespace SFA.DAS.RoatpFinance.Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 options.ModelBinderProviders.Insert(0, new StringTrimmingModelBinderProvider());
             })
-            .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
+            //.AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
             // NOTE: Can we move this to 2.2 to match the version of .NET Core we're coding against?
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
+
+            services.AddValidatorsFromAssemblyContaining<Startup>();
 
             services.AddSession(opt => { opt.IdleTimeout = TimeSpan.FromHours(1); });
 
@@ -196,6 +198,7 @@ namespace SFA.DAS.RoatpFinance.Web
 
             services.AddTransient<ISearchTermValidator, SearchTermValidator>();
             services.AddTransient<IRoatpFinancialClarificationViewModelValidator, RoatpFinancialClarificationViewModelValidator>();
+            services.AddTransient<IRoatpFinancialApplicationViewModelValidator, RoatpFinancialApplicationViewModelValidator>();
 
             services.AddTransient<IRoatpApplicationTokenService, RoatpApplicationTokenService>();
             services.AddTransient<IQnaTokenService, QnaTokenService>();
