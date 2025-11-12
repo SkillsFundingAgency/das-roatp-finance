@@ -10,8 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
-using SFA.DAS.AdminService.Common;
-using SFA.DAS.AdminService.Common.Extensions;
 using SFA.DAS.RoatpFinance.Web.Domain;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients.TokenService;

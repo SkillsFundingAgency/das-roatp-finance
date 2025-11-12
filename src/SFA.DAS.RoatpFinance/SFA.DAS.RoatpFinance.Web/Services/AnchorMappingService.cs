@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace SFA.DAS.RoatpFinance.Web.Services;
+﻿namespace SFA.DAS.RoatpFinance.Web.Services;
 
 public static class AnchorMappingService
 {

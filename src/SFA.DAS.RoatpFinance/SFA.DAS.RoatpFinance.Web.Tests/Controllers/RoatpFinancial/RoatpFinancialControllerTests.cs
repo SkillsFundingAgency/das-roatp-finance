@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.AdminService.Common.Testing.MockedObjects;
-using SFA.DAS.AdminService.Common.Validation;
 using SFA.DAS.QnA.Api.Types;
 using SFA.DAS.QnA.Api.Types.Page;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes;
@@ -21,6 +19,7 @@ using SFA.DAS.RoatpFinance.Web.Controllers;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
 using SFA.DAS.RoatpFinance.Web.Services;
 using SFA.DAS.RoatpFinance.Web.Validators;
+using SFA.DAS.RoatpFinance.Web.Validators.Validation;
 using SFA.DAS.RoatpFinance.Web.ViewModels;
 
 namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
@@ -55,6 +54,9 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             _financialReviewDetails = new FinancialReviewDetails();
             MockHttpContextAccessor = SetupMockedHttpContextAccessor();
+
+            _applicationValidator.Setup(x => x.Validate(It.IsAny<RoatpFinancialApplicationViewModel>()))
+                .Returns(new ValidationResponse());
 
             _controller = new RoatpFinancialController(
                 _applicationApplyApiClient.Object,

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SFA.DAS.AdminService.Common.Infrastructure;
-using SFA.DAS.AdminService.Common.Infrastructure.Firewall;
 using SFA.DAS.QnA.Api.Types;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Dashboard;
@@ -30,7 +28,7 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsAsync<string>();
+                return await response.Content.ReadAsStringAsync();
             }
             else
             {

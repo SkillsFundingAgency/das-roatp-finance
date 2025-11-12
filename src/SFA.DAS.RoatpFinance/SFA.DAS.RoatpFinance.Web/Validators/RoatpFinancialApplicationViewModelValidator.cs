@@ -3,8 +3,8 @@ using System.Globalization;
 using FluentValidation;
 using FluentValidation.Validators;
 using Polly;
-using SFA.DAS.AdminService.Common.Validation;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
+using SFA.DAS.RoatpFinance.Web.Validators.Validation;
 using SFA.DAS.RoatpFinance.Web.ViewModels;
 
 namespace SFA.DAS.RoatpFinance.Web.Validators
