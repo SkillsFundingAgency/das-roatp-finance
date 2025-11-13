@@ -173,7 +173,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             var result = await _controller.ViewApplication(_applicationId);
             var viewResult = result as ViewResult;
 
-            Assert.IsTrue(viewResult.ViewName.EndsWith(expectedView));
+            Assert.That(viewResult.ViewName.EndsWith(expectedView), Is.True);
         }
 
 
@@ -183,7 +183,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             _applicationApplyApiClient.Setup(x => x.GetApplication(_applicationId)).ReturnsAsync((RoatpApply)null);
 
             var result = _controller.SubmitClarification(_applicationId, new RoatpFinancialClarificationViewModel()).Result as RedirectToActionResult;
-            Assert.AreEqual("OpenApplications", result.ActionName);
+            Assert.That("OpenApplications", Is.EqualTo(result.ActionName));
         }
 
         [TestCase(FinancialApplicationSelectedGrade.Outstanding)]
@@ -251,7 +251,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             };
             var result = _controller.SubmitClarification(_applicationId, vm).Result as RedirectToActionResult;
             _applicationApplyApiClient.Verify(x => x.ReturnFinancialReview(_applicationId, It.IsAny<FinancialReviewDetails>()), Times.Once);
-            Assert.AreEqual("Graded", result.ActionName);
+            Assert.That("Graded", Is.EqualTo(result.ActionName));
         }
 
         [Test]
@@ -337,10 +337,10 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             };
             var result = _controller.SubmitClarification(_applicationId, vm).Result as ViewResult;
 
-            Assert.IsTrue(result.ViewName.Contains("Application_Clarification.cshtml"));
+            Assert.That(result.ViewName.Contains("Application_Clarification.cshtml"), Is.True);
             var resultModel = result.Model as RoatpFinancialClarificationViewModel;
 
-            Assert.IsTrue(resultModel.FinancialReviewDetails.ClarificationFiles[0].Filename == "file.pdf");
+            Assert.That(resultModel.FinancialReviewDetails.ClarificationFiles[0].Filename == "file.pdf", Is.True);
         }
 
         [Test]
@@ -427,10 +427,10 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             };
             var result = _controller.SubmitClarification(_applicationId, vm).Result as ViewResult;
 
-            Assert.IsTrue(result.ViewName.Contains("Application_Clarification.cshtml"));
+            Assert.That(result.ViewName.Contains("Application_Clarification.cshtml"), Is.True);
             var resultModel = result.Model as RoatpFinancialClarificationViewModel;
 
-            Assert.IsNull(resultModel.FinancialReviewDetails.ClarificationFiles);
+            Assert.That(resultModel.FinancialReviewDetails.ClarificationFiles, Is.Null);
         }
 
         [Test]
@@ -517,9 +517,9 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             };
             var result = _controller.SubmitClarification(_applicationId, vm).Result as ViewResult;
 
-            Assert.IsTrue(result.ViewName.Contains("Application_Clarification.cshtml"));
+            Assert.That(result.ViewName.Contains("Application_Clarification.cshtml"), Is.True);
             var resultModel = result.Model as RoatpFinancialClarificationViewModel;
-            Assert.AreEqual(1, resultModel.ErrorMessages.Count);
+            Assert.That(1, Is.EqualTo(resultModel.ErrorMessages.Count));
         }
 
         [Test]
@@ -532,7 +532,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             _applicationApplyApiClient.Setup(x => x.DownloadClarificationFile(_applicationId, filename)).ReturnsAsync(response);
 
             var result = _controller.DownloadClarificationFile(_applicationId, filename).Result as FileStreamResult;
-            Assert.AreEqual(filename, result.FileDownloadName);
+            Assert.That(filename, Is.EqualTo(result.FileDownloadName));
         }
 
         [Test]
@@ -554,8 +554,8 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             var result = await _controller.DownloadOpenApplications() as FileContentResult;
 
-            Assert.AreEqual(expectedFileContents, result.FileContents);
-            Assert.AreEqual($"current_applications_{DateTime.UtcNow:ddMMyy}.csv", result.FileDownloadName);
+            Assert.That(expectedFileContents, Is.EqualTo(result.FileContents));
+            Assert.That($"current_applications_{DateTime.UtcNow:ddMMyy}.csv", Is.EqualTo(result.FileDownloadName));
         }
     }
 }
