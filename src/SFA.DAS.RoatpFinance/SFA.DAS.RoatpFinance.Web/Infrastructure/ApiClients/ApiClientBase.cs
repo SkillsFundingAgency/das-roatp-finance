@@ -43,6 +43,20 @@ public abstract class ApiClientBase<AC>
             using (var response = await _httpClient.GetAsync(new Uri(uri, UriKind.Relative)))
             {
                 await LogErrorIfUnsuccessfulResponse(response);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent ||
+                    response.Content.Headers.ContentLength == 0)
+                {
+                    return default;
+                }
+
+                var contentStream = await response.Content.ReadAsStreamAsync();
+
+                if (contentStream == null || contentStream.Length == 0)
+                {
+                    return default;
+                }
+
                 return await response.Content.ReadFromJsonAsync<T>();
             }
         }
@@ -120,6 +134,20 @@ public abstract class ApiClientBase<AC>
                 new StringContent(serializeObject, Encoding.UTF8, _contentType)))
             {
                 await LogErrorIfUnsuccessfulResponse(response);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent ||
+                    response.Content.Headers.ContentLength == 0)
+                {
+                    return default;
+                }
+
+                var contentStream = await response.Content.ReadAsStreamAsync();
+
+                if (contentStream == null || contentStream.Length == 0)
+                {
+                    return default;
+                }
+
                 return await response.Content.ReadFromJsonAsync<U>();
             }
         }
@@ -201,6 +229,20 @@ public abstract class ApiClientBase<AC>
                 new StringContent(serializeObject, Encoding.UTF8, _contentType)))
             {
                 await LogErrorIfUnsuccessfulResponse(response);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent ||
+                    response.Content.Headers.ContentLength == 0)
+                {
+                    return default;
+                }
+
+                var contentStream = await response.Content.ReadAsStreamAsync();
+
+                if (contentStream == null || contentStream.Length == 0)
+                {
+                    return default;
+                }
+
                 return await response.Content.ReadFromJsonAsync<U>();
             }
         }
