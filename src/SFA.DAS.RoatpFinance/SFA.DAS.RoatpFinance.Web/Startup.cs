@@ -105,7 +105,7 @@ namespace SFA.DAS.RoatpFinance.Web
             })
             //.AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
             // NOTE: Can we move this to 2.2 to match the version of .NET Core we're coding against?
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
