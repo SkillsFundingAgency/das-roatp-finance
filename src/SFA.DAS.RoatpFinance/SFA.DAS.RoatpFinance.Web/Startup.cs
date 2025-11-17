@@ -133,31 +133,12 @@ namespace SFA.DAS.RoatpFinance.Web
 
         private void AddAuthentication(IServiceCollection services)
         {
-            if (ApplicationConfiguration.UseDfeSignIn)
-            {
-                services.AddAndConfigureDfESignInAuthentication(_configuration,
-                    "SFA.DAS.AdminService.Web.Auth",
-                    typeof(CustomServiceRole),
-                    ClientName.RoatpServiceAdmin,
-                    "/SignOut",
-                    "");
-            }
-            else
-            {
-                services.AddAuthentication(sharedOptions =>
-                {
-                    sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultChallengeScheme = WsFederationDefaults.AuthenticationScheme;
-                    sharedOptions.DefaultSignOutScheme = WsFederationDefaults.AuthenticationScheme;
-                }).AddWsFederation(options =>
-                {
-                    options.Wtrealm = ApplicationConfiguration.StaffAuthentication.WtRealm;
-                    options.MetadataAddress = ApplicationConfiguration.StaffAuthentication.MetadataAddress;
-                    options.TokenValidationParameters.RoleClaimType = Roles.RoleClaimType;
-                }).AddCookie();
-            }
-            
+            services.AddAndConfigureDfESignInAuthentication(_configuration,
+                "SFA.DAS.AdminService.Web.Auth",
+                typeof(CustomServiceRole),
+                ClientName.RoatpServiceAdmin,
+                "/SignOut",
+                "");
         }
 
         private void AddAntiforgery(IServiceCollection services)

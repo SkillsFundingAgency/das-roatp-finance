@@ -22,7 +22,6 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
         public void Setup()
         {
             _configurationMock = new Mock<IWebConfiguration>();
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
             _configurationMock.Setup(x => x.DfESignInServiceHelpUrl).Returns("test");
             _controller = new AccountController(Mock.Of<ILogger<AccountController>>(), _configurationMock.Object)
             {
@@ -32,22 +31,8 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
         }
 
         [Test]
-        public void SignIn_returns_expected_ChallengeResult()
-        {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(false);
-            
-            var result = _controller.SignIn() as ChallengeResult;
-
-            Assert.That(result, Is.Not.Null);
-            CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
-            CollectionAssert.Contains(result.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
-        }
-        
-        [Test]
         public void SignIn_returns_expected_ChallengeResult_DfeSignIn()
         {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
-            
             var result = _controller.SignIn() as ChallengeResult;
 
             Assert.That(result, Is.Not.Null);
@@ -65,22 +50,8 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
         }
 
         [Test]
-        public void SignOut_returns_expected_SignOutResult_For_Pirean()
-        {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(false);
-                
-            var result = _controller.SignOut() as SignOutResult;
-
-            Assert.That(result, Is.Not.Null);
-            CollectionAssert.IsNotEmpty(result.AuthenticationSchemes);
-            CollectionAssert.Contains(result.AuthenticationSchemes, WsFederationDefaults.AuthenticationScheme);
-            CollectionAssert.Contains(result.AuthenticationSchemes, CookieAuthenticationDefaults.AuthenticationScheme);
-        }
-        [Test]
         public void SignOut_returns_expected_SignOutResult_For_DfeSignIn()
         {
-            _configurationMock.Setup(x => x.UseDfeSignIn).Returns(true);
-                
             var result = _controller.SignOut() as SignOutResult;
 
             Assert.That(result, Is.Not.Null);
@@ -107,7 +78,6 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.Account
             Assert.That("AccessDenied", Is.EqualTo(result.ViewName));
             var actualModel = result.Model as Error403ViewModel;
             Assert.That(actualModel, Is.Not.Null);
-            Assert.That(actualModel.UseDfESignIn, Is.True);
             Assert.That("test", Is.EqualTo(actualModel.HelpPageLink));
         }
     }

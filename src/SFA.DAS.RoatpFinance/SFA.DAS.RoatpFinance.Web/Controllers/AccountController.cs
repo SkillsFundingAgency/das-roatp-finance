@@ -25,14 +25,11 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         [HttpGet]
         public IActionResult SignIn()
         {
-            var challengeScheme = _webConfiguration.UseDfeSignIn
-                ? OpenIdConnectDefaults.AuthenticationScheme
-                : WsFederationDefaults.AuthenticationScheme;
             _logger.LogInformation("Start of Sign In");
             var redirectUrl = Url.Action("PostSignIn", "Account");
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
-                challengeScheme);
+                OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         [HttpGet]
@@ -61,10 +58,6 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
             {
                 Response.Cookies.Delete(cookie);
             }
-            
-            var authScheme = _webConfiguration.UseDfeSignIn
-                ? OpenIdConnectDefaults.AuthenticationScheme
-                : WsFederationDefaults.AuthenticationScheme;
 
             return SignOut(
                 new AuthenticationProperties
@@ -73,7 +66,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                     AllowRefresh = true
                 },
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                authScheme);
+                OpenIdConnectDefaults.AuthenticationScheme);
 
         }
 
@@ -96,7 +89,6 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
 
             var model = new Error403ViewModel
             {
-                UseDfESignIn = _webConfiguration.UseDfeSignIn,
                 HelpPageLink = _webConfiguration.DfESignInServiceHelpUrl
             };
 

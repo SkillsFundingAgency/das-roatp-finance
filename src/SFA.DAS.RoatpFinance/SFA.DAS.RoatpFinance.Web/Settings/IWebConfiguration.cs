@@ -9,15 +9,11 @@ namespace SFA.DAS.RoatpFinance.Web.Settings
 
         string DataProtectionKeysDatabase { get; set; }
 
-        AuthSettings StaffAuthentication { get; set; }
-
         ManagedIdentityApiAuthentication RoatpApplicationApiAuthentication { get; set; }
 
         ManagedIdentityApiAuthentication QnaApiAuthentication { get; set; }
 
         string EsfaAdminServicesBaseUrl { get; set; }
-        
-        bool UseDfeSignIn { get; set; }
         string DfESignInServiceHelpUrl { get; set; }
     }
 }
