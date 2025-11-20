@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using SFA.DAS.RoatpFinance.Web.Extensions;
 using SFA.DAS.RoatpFinance.Web.Validators.Validation;
@@ -380,8 +381,9 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         private async Task<RoatpFinancialClarificationViewModel> RemoveUploadedFileAndRebuildViewModel(Guid applicationId, RoatpFinancialClarificationViewModel vm,
          string removeClarificationFileName, RoatpApply application)
         {
-            var fileRemoved = await _applyApiClient.RemoveClarificationFile(applicationId,
-                HttpContext.User.UserId(), removeClarificationFileName);
+            var model = new RemoveClarificationFileCommandModel
+                { UserId = HttpContext.User.UserId(), FileName = removeClarificationFileName };
+            var fileRemoved = await _applyApiClient.RemoveClarificationFile(applicationId, model);
 
 
             var financialReviewDets = vm.FinancialReviewDetails;
@@ -428,8 +430,24 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                 var fileToUpload = vm.FilesToUpload[0].FileName;
                 if (!FileAlreadyInClarifications(financialReviewDets.ClarificationFiles, fileToUpload))
                 {
-                    var fileUploadedSuccessfully = await _applyApiClient.UploadClarificationFile(applicationId,
-                        HttpContext.User.UserId(), vm.FilesToUpload);
+                    var content = new MultipartFormDataContent
+                    {
+                        { new StringContent(HttpContext.User.UserId()), "UserId" }
+                    };
+
+                    foreach (var file in vm.FilesToUpload)
+                    {
+                        var fileContent = new StreamContent(file.OpenReadStream())
+                        {
+                            Headers =
+                            {
+                                ContentLength = file.Length, ContentType = new MediaTypeHeaderValue(file.ContentType)
+                            }
+                        };
+                        content.Add(fileContent, file.FileName, file.FileName);
+                    }
+
+                    var fileUploadedSuccessfully = await _applyApiClient.UploadClarificationFile(applicationId, content);
 
 
                     if (fileUploadedSuccessfully)

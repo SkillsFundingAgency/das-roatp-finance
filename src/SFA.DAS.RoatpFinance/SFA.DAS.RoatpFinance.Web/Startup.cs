@@ -10,9 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
+using RestEase.HttpClientFactory;
 using SFA.DAS.RoatpFinance.Web.Domain;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
-using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients.TokenService;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.AutoMapper;
 using SFA.DAS.RoatpFinance.Web.ModelBinders;
 using SFA.DAS.RoatpFinance.Web.Services;
@@ -54,7 +54,7 @@ namespace SFA.DAS.RoatpFinance.Web
                 .AddConfiguration(configuration)
                 .SetBasePath(Directory.GetCurrentDirectory());
 #if DEBUG
-            if (!configuration["EnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+            if (!configuration["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
             {
                 config.AddJsonFile("appsettings.json", true)
                     .AddJsonFile("appsettings.Development.json", true);
@@ -66,7 +66,7 @@ namespace SFA.DAS.RoatpFinance.Web
             {
                 config.AddAzureTableStorage(options =>
                     {
-                        options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                        options.ConfigurationKeys = configuration["ConfigNames"]!.Split(",");
                         options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
                         options.EnvironmentName = configuration["EnvironmentName"];
                         options.PreFixConfigurationKeys = false;
@@ -125,7 +125,7 @@ namespace SFA.DAS.RoatpFinance.Web
             services.AddApplicationInsightsTelemetry();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            ConfigureHttpClients(services);
+            ConfigureClients(services);
             MappingStartup.AddMappings();
 
             ConfigureDependencyInjection(services);
@@ -146,27 +146,30 @@ namespace SFA.DAS.RoatpFinance.Web
             services.AddAntiforgery(options => options.Cookie = new CookieBuilder() { Name = ".RoatpFinance.Staff.AntiForgery", HttpOnly = false });
         }
 
-        private void ConfigureHttpClients(IServiceCollection services)
+        private void ConfigureClients(IServiceCollection services)
         {
-            var acceptHeaderName = "Accept";
-            var acceptHeaderValue = "application/json";
-            var handlerLifeTime = TimeSpan.FromMinutes(5);
+            var config = _configuration.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
+            services.AddRestEaseClient<IQnaApiClient>(config.QnaApiAuthentication.ApiBaseAddress);
+            services.AddRestEaseClient<IRoatpApplicationApiClient>(config.RoatpApplicationApiAuthentication.ApiBaseAddress);
+            //var acceptHeaderName = "Accept";
+            //var acceptHeaderValue = "application/json";
+            //var handlerLifeTime = TimeSpan.FromMinutes(5);
 
-            services.AddHttpClient<IRoatpApplicationApiClient, RoatpApplicationApiClient>(config =>
-            {
-                config.BaseAddress = new Uri(ApplicationConfiguration.RoatpApplicationApiAuthentication.ApiBaseAddress);
-                config.DefaultRequestHeaders.Add(acceptHeaderName, acceptHeaderValue);
-            })
-            .SetHandlerLifetime(handlerLifeTime)
-            .AddPolicyHandler(GetRetryPolicy());
+            //services.AddHttpClient<IRoatpApplicationApiClient, RoatpApplicationApiClient>(config =>
+            //{
+            //    config.BaseAddress = new Uri(ApplicationConfiguration.RoatpApplicationApiAuthentication.ApiBaseAddress);
+            //    config.DefaultRequestHeaders.Add(acceptHeaderName, acceptHeaderValue);
+            //})
+            //.SetHandlerLifetime(handlerLifeTime)
+            //.AddPolicyHandler(GetRetryPolicy());
 
-            services.AddHttpClient<IQnaApiClient, QnaApiClient>(config =>
-            {
-                config.BaseAddress = new Uri(ApplicationConfiguration.QnaApiAuthentication.ApiBaseAddress);
-                config.DefaultRequestHeaders.Add(acceptHeaderName, acceptHeaderValue);
-            })
-            .SetHandlerLifetime(handlerLifeTime)
-            .AddPolicyHandler(GetRetryPolicy());
+            //services.AddHttpClient<IQnaApiClient, QnaApiClient>(config =>
+            //{
+            //    config.BaseAddress = new Uri(ApplicationConfiguration.QnaApiAuthentication.ApiBaseAddress);
+            //    config.DefaultRequestHeaders.Add(acceptHeaderName, acceptHeaderValue);
+            //})
+            //.SetHandlerLifetime(handlerLifeTime)
+            //.AddPolicyHandler(GetRetryPolicy());
         }
 
         private void ConfigureDependencyInjection(IServiceCollection services)
@@ -179,8 +182,8 @@ namespace SFA.DAS.RoatpFinance.Web
             services.AddTransient<IRoatpFinancialClarificationViewModelValidator, RoatpFinancialClarificationViewModelValidator>();
             services.AddTransient<IRoatpFinancialApplicationViewModelValidator, RoatpFinancialApplicationViewModelValidator>();
 
-            services.AddTransient<IRoatpApplicationTokenService, RoatpApplicationTokenService>();
-            services.AddTransient<IQnaTokenService, QnaTokenService>();
+            //services.AddTransient<IRoatpApplicationTokenService, RoatpApplicationTokenService>();
+            //services.AddTransient<IQnaTokenService, QnaTokenService>();
 
             services.AddTransient<ICsvExportService, CsvExportService>();
 
