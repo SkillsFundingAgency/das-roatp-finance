@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using RestEase;
+using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
 
 namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
 {
@@ -40,7 +41,7 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
         Task<RoatpFinancialApplicationsStatusCounts> GetFinancialApplicationsStatusCounts([Path] string searchTerm);
 
         [Post("/financial/{applicationId}/startreview")]
-        Task StartFinancialReview([Path] Guid applicationId, [Body] string reviewer);
+        Task StartFinancialReview([Path] Guid applicationId, [Body] StartFinancialReviewCommandModel model);
 
         [Post("/financial/{applicationId}/grade")]
         Task ReturnFinancialReview([Path] Guid applicationId, [Body] FinancialReviewDetails financialReviewDetails);

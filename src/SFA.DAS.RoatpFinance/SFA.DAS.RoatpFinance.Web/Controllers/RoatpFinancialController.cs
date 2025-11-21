@@ -21,6 +21,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using SFA.DAS.RoatpFinance.Web.Extensions;
+using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
 using SFA.DAS.RoatpFinance.Web.Validators.Validation;
 
 namespace SFA.DAS.RoatpFinance.Web.Controllers
@@ -173,7 +174,8 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                     case FinancialReviewStatus.New:
                     case FinancialReviewStatus.InProgress:
                     case null:
-                        await _applyApiClient.StartFinancialReview(application.ApplicationId, HttpContext.User.UserDisplayName());
+                        await _applyApiClient.StartFinancialReview(application.ApplicationId,
+                            new StartFinancialReviewCommandModel { Reviewer = HttpContext.User.UserDisplayName() });
                         return View("~/Views/Financial/Application.cshtml", vm);
                     case FinancialReviewStatus.ClarificationSent:
                         var clarificationVm = ConvertFinancialApplicationToFinancialClarificationViewModel(vm, vm.ClarificationComments);

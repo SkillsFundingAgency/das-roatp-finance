@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
+﻿namespace SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
 
 public class RemoveClarificationFileCommandModel
 {

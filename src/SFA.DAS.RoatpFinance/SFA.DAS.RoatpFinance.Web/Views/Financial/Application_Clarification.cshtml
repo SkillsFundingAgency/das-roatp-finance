@@ -284,7 +284,7 @@
         <div class="govuk-grid-column-two-thirds">
 
             <form class="das-ajax-form js-disable-on-submit" method="post" enctype="multipart/form-data"
-                  asp-action="SubmitClarification" asp-controller="RoatpFinancial">
+                  asp-action="SubmitClarification" asp-controller="RoatpFinancial" asp-route-applicationId="@Model.ApplicationId">
                 <input type="hidden" name="ApplicationId" value="@Model.ApplicationId" />
                 <input type="hidden" name="OrgId" value="@Model.OrgId" />
                 <input type="hidden" name="ApplicantEmailAddress" value="@Model.ApplicantEmailAddress" />

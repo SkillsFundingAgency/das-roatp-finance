@@ -17,6 +17,7 @@ using SFA.DAS.RoatpFinance.Web.ApplyTypes.Export;
 using SFA.DAS.RoatpFinance.Web.AutoMapperProfiles;
 using SFA.DAS.RoatpFinance.Web.Controllers;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
+using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
 using SFA.DAS.RoatpFinance.Web.Services;
 using SFA.DAS.RoatpFinance.Web.Validators;
 using SFA.DAS.RoatpFinance.Web.Validators.Validation;
