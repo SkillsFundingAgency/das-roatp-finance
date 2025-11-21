@@ -28,6 +28,7 @@ using System.Net;
 using System.Net.Http;
 using FluentValidation;
 using Microsoft.Extensions.Primitives;
+using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.DfESignIn.Auth.AppStart;
 using SFA.DAS.DfESignIn.Auth.Enums;
@@ -149,8 +150,16 @@ namespace SFA.DAS.RoatpFinance.Web
         private void ConfigureClients(IServiceCollection services)
         {
             var config = _configuration.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
-            services.AddRestEaseClient<IQnaApiClient>(config.QnaApiAuthentication.ApiBaseAddress);
-            services.AddRestEaseClient<IRoatpApplicationApiClient>(config.RoatpApplicationApiAuthentication.ApiBaseAddress);
+
+            services.AddRestEaseClient<IQnaApiClient>(config.QnaApiAuthentication.ApiBaseAddress)
+                .AddHttpMessageHandler(() =>
+                    new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
+                        config.QnaApiAuthentication.Identifier));
+
+            services.AddRestEaseClient<IRoatpApplicationApiClient>(config.RoatpApplicationApiAuthentication.ApiBaseAddress)
+                .AddHttpMessageHandler(() =>
+                    new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
+                        config.RoatpApplicationApiAuthentication.Identifier));
             //var acceptHeaderName = "Accept";
             //var acceptHeaderValue = "application/json";
             //var handlerLifeTime = TimeSpan.FromMinutes(5);
