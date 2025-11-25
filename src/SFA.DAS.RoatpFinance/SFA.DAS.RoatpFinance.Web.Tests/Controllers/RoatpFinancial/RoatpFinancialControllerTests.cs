@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using RestEase;
 using SFA.DAS.QnA.Api.Types;
 using SFA.DAS.QnA.Api.Types.Page;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes;
@@ -307,7 +308,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             _applicationApplyApiClient.Setup(x =>
                     x.UploadClarificationFile(_applicationId, It.IsAny<MultipartFormDataContent>()))
-                .ReturnsAsync(true);
+                .ReturnsAsync(new Response<string>("", new HttpResponseMessage(HttpStatusCode.OK), () => ""));
 
 
             _financialReviewDetails = new FinancialReviewDetails
@@ -487,7 +488,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             _applicationApplyApiClient.Setup(x =>
                     x.UploadClarificationFile(_applicationId, It.IsAny<MultipartFormDataContent>()))
-                .ReturnsAsync(true);
+                .ReturnsAsync(new Response<string>("", new HttpResponseMessage(HttpStatusCode.OK), () => ""));
 
 
             _financialReviewDetails = new FinancialReviewDetails

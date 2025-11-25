@@ -46,8 +46,9 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
         [Post("/financial/{applicationId}/grade")]
         Task ReturnFinancialReview([Path] Guid applicationId, [Body] FinancialReviewDetails financialReviewDetails);
 
-        [Post("/clarification/applications/{applicationId}/upload")] 
-        Task<bool> UploadClarificationFile([Path]Guid applicationId, [Body] MultipartFormDataContent content);
+        [Post("/clarification/applications/{applicationId}/upload")]
+        [AllowAnyStatusCode]
+        Task<Response<string>> UploadClarificationFile([Path]Guid applicationId, [Body] MultipartFormDataContent content);
 
         [Post("/clarification/applications/{applicationId}/remove")]
         Task<bool> RemoveClarificationFile([Path] Guid applicationId, [Body] RemoveClarificationFileCommandModel model);

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using SFA.DAS.RoatpFinance.Web.Extensions;
@@ -452,7 +453,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                     var fileUploadedSuccessfully = await _applyApiClient.UploadClarificationFile(applicationId, content);
 
 
-                    if (fileUploadedSuccessfully)
+                    if (fileUploadedSuccessfully.ResponseMessage.StatusCode == HttpStatusCode.OK)
                     {
                         if (financialReviewDets.ClarificationFiles == null)
                             financialReviewDets.ClarificationFiles = new List<ClarificationFile>();
