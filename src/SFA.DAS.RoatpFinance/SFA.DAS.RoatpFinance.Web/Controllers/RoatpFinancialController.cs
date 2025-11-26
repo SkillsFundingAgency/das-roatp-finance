@@ -390,7 +390,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
 
 
             var financialReviewDets = vm.FinancialReviewDetails;
-            if (fileRemoved)
+            if (fileRemoved.ResponseMessage.StatusCode == HttpStatusCode.OK)
             {
                 var clarificationFiles = financialReviewDets.ClarificationFiles;
                 var newClarificationFiles = new List<ClarificationFile>();

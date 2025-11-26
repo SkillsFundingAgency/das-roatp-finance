@@ -409,8 +409,8 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             var model = new RemoveClarificationFileCommandModel { UserId = "", FileName = fileToBeRemoved };
             _applicationApplyApiClient.Setup(x =>
-                    x.RemoveClarificationFile(_applicationId, model))
-                .ReturnsAsync(true);
+                    x.RemoveClarificationFile(It.IsAny<Guid>(), It.IsAny<RemoveClarificationFileCommandModel>()))
+                .ReturnsAsync(new Response<string>("", new HttpResponseMessage(HttpStatusCode.OK), () => ""));
 
             _applicationApplyApiClient.Setup(x => x.GetFinancialReviewDetails(_applicationId)).ReturnsAsync(new FinancialReviewDetails());
 

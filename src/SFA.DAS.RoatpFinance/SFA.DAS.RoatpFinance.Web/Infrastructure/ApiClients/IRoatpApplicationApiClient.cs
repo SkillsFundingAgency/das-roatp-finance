@@ -51,7 +51,7 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
         Task<Response<string>> UploadClarificationFile([Path]Guid applicationId, [Body] MultipartFormDataContent content);
 
         [Post("/clarification/applications/{applicationId}/remove")]
-        Task<bool> RemoveClarificationFile([Path] Guid applicationId, [Body] RemoveClarificationFileCommandModel model);
+        Task<Response<string>> RemoveClarificationFile([Path] Guid applicationId, [Body] RemoveClarificationFileCommandModel model);
 
         [Get("/clarification/applications/{applicationId}/download/{filename}")]
         Task<HttpResponseMessage> DownloadClarificationFile([Path] Guid applicationId, [Path] string filename);
