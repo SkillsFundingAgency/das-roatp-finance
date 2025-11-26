@@ -104,9 +104,6 @@ namespace SFA.DAS.RoatpFinance.Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 options.ModelBinderProviders.Insert(0, new StringTrimmingModelBinderProvider());
             })
-            //.AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
-            // NOTE: Can we move this to 2.2 to match the version of .NET Core we're coding against?
-            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -160,25 +157,6 @@ namespace SFA.DAS.RoatpFinance.Web
                 .AddHttpMessageHandler(() =>
                     new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
                         config.RoatpApplicationApiAuthentication.Identifier));
-            //var acceptHeaderName = "Accept";
-            //var acceptHeaderValue = "application/json";
-            //var handlerLifeTime = TimeSpan.FromMinutes(5);
-
-            //services.AddHttpClient<IRoatpApplicationApiClient, RoatpApplicationApiClient>(config =>
-            //{
-            //    config.BaseAddress = new Uri(ApplicationConfiguration.RoatpApplicationApiAuthentication.ApiBaseAddress);
-            //    config.DefaultRequestHeaders.Add(acceptHeaderName, acceptHeaderValue);
-            //})
-            //.SetHandlerLifetime(handlerLifeTime)
-            //.AddPolicyHandler(GetRetryPolicy());
-
-            //services.AddHttpClient<IQnaApiClient, QnaApiClient>(config =>
-            //{
-            //    config.BaseAddress = new Uri(ApplicationConfiguration.QnaApiAuthentication.ApiBaseAddress);
-            //    config.DefaultRequestHeaders.Add(acceptHeaderName, acceptHeaderValue);
-            //})
-            //.SetHandlerLifetime(handlerLifeTime)
-            //.AddPolicyHandler(GetRetryPolicy());
         }
 
         private void ConfigureDependencyInjection(IServiceCollection services)
@@ -190,9 +168,6 @@ namespace SFA.DAS.RoatpFinance.Web
             services.AddTransient<ISearchTermValidator, SearchTermValidator>();
             services.AddTransient<IRoatpFinancialClarificationViewModelValidator, RoatpFinancialClarificationViewModelValidator>();
             services.AddTransient<IRoatpFinancialApplicationViewModelValidator, RoatpFinancialApplicationViewModelValidator>();
-
-            //services.AddTransient<IRoatpApplicationTokenService, RoatpApplicationTokenService>();
-            //services.AddTransient<IQnaTokenService, QnaTokenService>();
 
             services.AddTransient<ICsvExportService, CsvExportService>();
 
