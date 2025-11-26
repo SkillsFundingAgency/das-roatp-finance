@@ -256,7 +256,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             Assert.That("Graded", Is.EqualTo(result.ActionName));
         }
 
-        //[Test] TODO FIX LATER
+        [Test]
         public void When_clarification_file_is_uploaded_and_page_is_refreshed_with_filename_included_in_model()
         {
             var buttonPressed = "submitClarificationFiles";

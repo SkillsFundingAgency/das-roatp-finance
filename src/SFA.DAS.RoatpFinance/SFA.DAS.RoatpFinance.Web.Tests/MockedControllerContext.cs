@@ -27,7 +27,8 @@ public class MockedControllerContext
         if (!string.IsNullOrEmpty(buttonToAdd))
         {
             var clarificationFileName = "file.pdf";
-            var file = new FormFile(new MemoryStream(), 0, 0, clarificationFileName, clarificationFileName);
+            var file = new FormFile(new MemoryStream(), 0, 0, clarificationFileName, clarificationFileName){Headers = new HeaderDictionary()};
+            file.ContentType = "application/json";
             var formFileCollection = new FormFileCollection { file };
             var dictionary = new Dictionary<string, StringValues>();
             dictionary.Add(buttonToAdd, clarificationFileName);
