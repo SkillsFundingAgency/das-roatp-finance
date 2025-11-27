@@ -15,7 +15,6 @@ using SFA.DAS.QnA.Api.Types.Page;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Export;
-using SFA.DAS.RoatpFinance.Web.AutoMapperProfiles;
 using SFA.DAS.RoatpFinance.Web.Controllers;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;

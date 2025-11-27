@@ -1,8 +1,4 @@
 ﻿using SFA.DAS.QnA.Api.Types;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using RestEase;
 
 namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients

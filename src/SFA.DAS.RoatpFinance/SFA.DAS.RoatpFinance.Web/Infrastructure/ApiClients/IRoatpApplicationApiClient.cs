@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
+﻿using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Dashboard;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Export;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using RestEase;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
 

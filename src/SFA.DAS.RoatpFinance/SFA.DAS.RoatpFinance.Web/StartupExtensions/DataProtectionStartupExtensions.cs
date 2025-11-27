@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.RoatpFinance.Web.Settings;
 using StackExchange.Redis;
 

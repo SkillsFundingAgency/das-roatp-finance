@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Builder;
 
 namespace SFA.DAS.RoatpFinance.Web.StartupExtensions;
 

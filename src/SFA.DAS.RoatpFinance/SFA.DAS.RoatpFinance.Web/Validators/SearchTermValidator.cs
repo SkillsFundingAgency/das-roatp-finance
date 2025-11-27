@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SFA.DAS.RoatpFinance.Web.Validators.Validation;
+﻿using SFA.DAS.RoatpFinance.Web.Validators.Validation;
 
 namespace SFA.DAS.RoatpFinance.Web.Validators
 {

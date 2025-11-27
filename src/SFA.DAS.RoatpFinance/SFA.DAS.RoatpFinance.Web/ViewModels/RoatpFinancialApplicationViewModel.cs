@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SFA.DAS.QnA.Api.Types;
+﻿using SFA.DAS.QnA.Api.Types;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
 using SFA.DAS.RoatpFinance.Web.Validators.Validation;

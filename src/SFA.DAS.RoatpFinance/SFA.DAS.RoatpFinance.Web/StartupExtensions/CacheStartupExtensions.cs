@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.RoatpFinance.Web.Settings;
+﻿using SFA.DAS.RoatpFinance.Web.Settings;
 
 namespace SFA.DAS.RoatpFinance.Web.StartupExtensions
 {
