@@ -32,17 +32,6 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         [HttpGet]
         public IActionResult PostSignIn()
         {
-            //if (!HttpContext.User.HasValidRole())
-            //{
-            //    _logger.LogInformation($"PostSignIn - User '{HttpContext.User.Identity.Name}' does not have a valid role");
-            //    foreach (var cookie in Request.Cookies.Keys)
-            //    {
-            //        Response.Cookies.Delete(cookie);
-            //    }
-
-            //    return RedirectToAction("AccessDenied");
-            //}
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -78,7 +67,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         {
             if (HttpContext.User != null)
             {
-                var userName = HttpContext.User.Identity.Name ?? HttpContext.User.FindFirstValue(ClaimTypes.Upn);
+                var userName = HttpContext.User.Identity?.Name ?? HttpContext.User.FindFirstValue(ClaimTypes.Upn);
                 var roles = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role || c.Type == Domain.Roles.RoleClaimType).Select(c => c.Value);
 
                 _logger.LogError($"AccessDenied - User '{userName}' does not have a valid role. They have the following roles: '{string.Join(",", roles)}'");

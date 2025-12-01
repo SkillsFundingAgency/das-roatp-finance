@@ -180,10 +180,12 @@
                                                 case "ComplexCheckboxList":
                                                     <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
                                                         @if (answer != null && answer.Split(',') != null)
-                                                            @foreach (var selectedAnswer in answer.Split(','))
+                                                        {
+                                                            foreach (var selectedAnswer in answer.Split(','))
                                                             {
                                                                 <li>@selectedAnswer</li>
                                                             }
+                                                        }
                                                     </ul>
                                                     break;
                                                 case "Date":

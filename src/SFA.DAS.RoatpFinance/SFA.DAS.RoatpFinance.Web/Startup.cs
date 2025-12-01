@@ -126,7 +126,7 @@ namespace SFA.DAS.RoatpFinance.Web
                 "");
         }
 
-        private void AddAntiforgery(IServiceCollection services)
+        private static void AddAntiforgery(IServiceCollection services)
         {
             services.AddAntiforgery(options => options.Cookie = new CookieBuilder() { Name = ".RoatpFinance.Staff.AntiForgery", HttpOnly = false });
         }
@@ -182,7 +182,7 @@ namespace SFA.DAS.RoatpFinance.Web
             {
                 if (!context.Response.Headers.ContainsKey("X-Permitted-Cross-Domain-Policies"))
                 {
-                    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", new StringValues("none"));
+                    context.Response.Headers.Append("X-Permitted-Cross-Domain-Policies", new StringValues("none"));
                 }
                 await next();
             });
@@ -197,15 +197,6 @@ namespace SFA.DAS.RoatpFinance.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-
-        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
-                    retryAttempt)));
         }
     }
 }
