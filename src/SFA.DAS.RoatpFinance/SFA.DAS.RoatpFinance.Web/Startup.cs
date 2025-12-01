@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Polly;
-using Polly.Extensions.Http;
 using RestEase.HttpClientFactory;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.AutoMapper;
@@ -12,7 +10,6 @@ using SFA.DAS.RoatpFinance.Web.StartupExtensions;
 using SFA.DAS.RoatpFinance.Web.Validators;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Net;
 using FluentValidation;
 using Microsoft.Extensions.Primitives;
 using SFA.DAS.Api.Common.Infrastructure;
