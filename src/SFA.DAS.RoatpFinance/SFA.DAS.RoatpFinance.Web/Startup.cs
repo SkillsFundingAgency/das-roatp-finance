@@ -63,7 +63,7 @@ namespace SFA.DAS.RoatpFinance.Web
             }
 
             _configuration = config.Build();
-            ApplicationConfiguration = _configuration.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
+            ApplicationConfiguration = _configuration.Get<WebConfiguration>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -133,17 +133,15 @@ namespace SFA.DAS.RoatpFinance.Web
 
         private void ConfigureClients(IServiceCollection services)
         {
-            var config = _configuration.GetSection(nameof(WebConfiguration)).Get<WebConfiguration>();
-
-            services.AddRestEaseClient<IQnaApiClient>(config.QnaApiAuthentication.ApiBaseAddress)
+            services.AddRestEaseClient<IQnaApiClient>(ApplicationConfiguration.QnaApiAuthentication.ApiBaseAddress)
                 .AddHttpMessageHandler(() =>
                     new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
-                        config.QnaApiAuthentication.Identifier));
+                        ApplicationConfiguration.QnaApiAuthentication.Identifier));
 
-            services.AddRestEaseClient<IRoatpApplicationApiClient>(config.RoatpApplicationApiAuthentication.ApiBaseAddress)
+            services.AddRestEaseClient<IRoatpApplicationApiClient>(ApplicationConfiguration.RoatpApplicationApiAuthentication.ApiBaseAddress)
                 .AddHttpMessageHandler(() =>
                     new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
-                        config.RoatpApplicationApiAuthentication.Identifier));
+                        ApplicationConfiguration.RoatpApplicationApiAuthentication.Identifier));
         }
 
         private void ConfigureDependencyInjection(IServiceCollection services)
