@@ -187,7 +187,7 @@
                                 <ul class="govuk-list">
                                     @if (Model.FinancialReviewDetails?.ClarificationFiles != null)
                                     {
-                                        foreach (var file in Model.FinancialReviewDetails?.ClarificationFiles)
+                                        foreach (var file in Model.FinancialReviewDetails.ClarificationFiles)
                                         {
                                             <li><a class="govuk-link govuk-link--no-visited-state" asp-action="DownloadClarificationFile" asp-controller="RoatpFinancial" asp-route-ApplicationId="@Model.ApplicationId" asp-route-Filename="@file.Filename">@file.Filename</a></li>
                                         }

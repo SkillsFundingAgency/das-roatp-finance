@@ -72,7 +72,7 @@ namespace SFA.DAS.RoatpFinance.Web.Validators
             return validationResponse;
         }
 
-        private void ProcessDate(FinancialDueDate dueDate, string propertyName, ValidationResponse validationResponse)
+        private static void ProcessDate(FinancialDueDate dueDate, string propertyName, ValidationResponse validationResponse)
         {
             if (string.IsNullOrWhiteSpace(dueDate.Day) || string.IsNullOrWhiteSpace(dueDate.Month) || string.IsNullOrWhiteSpace(dueDate.Year))
             {
