@@ -1,6 +1,15 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Primitives;
 using RestEase.HttpClientFactory;
+using SFA.DAS.Api.Common.Infrastructure;
+using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.DfESignIn.Auth.AppStart;
+using SFA.DAS.DfESignIn.Auth.Enums;
+using SFA.DAS.RoatpFinance.Web.Extensions;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.AutoMapper;
 using SFA.DAS.RoatpFinance.Web.ModelBinders;
@@ -8,14 +17,6 @@ using SFA.DAS.RoatpFinance.Web.Services;
 using SFA.DAS.RoatpFinance.Web.Settings;
 using SFA.DAS.RoatpFinance.Web.StartupExtensions;
 using SFA.DAS.RoatpFinance.Web.Validators;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using FluentValidation;
-using Microsoft.Extensions.Primitives;
-using SFA.DAS.Api.Common.Infrastructure;
-using SFA.DAS.Configuration.AzureTableStorage;
-using SFA.DAS.DfESignIn.Auth.AppStart;
-using SFA.DAS.DfESignIn.Auth.Enums;
 
 namespace SFA.DAS.RoatpFinance.Web
 {
@@ -34,7 +35,7 @@ namespace SFA.DAS.RoatpFinance.Web
         {
             _env = env;
             _logger = logger;
-            
+
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .SetBasePath(Directory.GetCurrentDirectory());
@@ -104,7 +105,8 @@ namespace SFA.DAS.RoatpFinance.Web
 
             services.AddHealthChecks();
 
-            services.AddApplicationInsightsTelemetry();
+            services.AddOpenTelemetryRegistration(_configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]!);
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             ConfigureClients(services);
