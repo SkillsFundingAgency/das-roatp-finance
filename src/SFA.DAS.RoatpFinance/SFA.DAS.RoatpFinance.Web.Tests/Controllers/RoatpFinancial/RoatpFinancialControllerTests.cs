@@ -275,7 +275,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             {
                 ControllerContext = MockedControllerContext.Setup(buttonPressed)
             };
-            
+
             _clarificationValidator.Setup(x =>
                     x.Validate(It.IsAny<RoatpFinancialClarificationViewModel>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Returns(new ValidationResponse { });
@@ -541,7 +541,6 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
         public async Task DownloadOpenApplications_downloads_file()
         {
             // Need this otherwise AutoMapper will complain
-            Infrastructure.AutoMapper.MappingStartup.AddMappings();
 
             var apiResponse = new List<RoatpFinancialSummaryDownloadItem>();
 

@@ -11,7 +11,6 @@ using SFA.DAS.DfESignIn.Auth.AppStart;
 using SFA.DAS.DfESignIn.Auth.Enums;
 using SFA.DAS.RoatpFinance.Web.Extensions;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
-using SFA.DAS.RoatpFinance.Web.Infrastructure.AutoMapper;
 using SFA.DAS.RoatpFinance.Web.ModelBinders;
 using SFA.DAS.RoatpFinance.Web.Services;
 using SFA.DAS.RoatpFinance.Web.Settings;
@@ -110,7 +109,6 @@ namespace SFA.DAS.RoatpFinance.Web
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             ConfigureClients(services);
-            MappingStartup.AddMappings();
 
             ConfigureDependencyInjection(services);
         }

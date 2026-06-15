@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.IO.Compression;
+using System.Net;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.QnA.Api.Types;
@@ -7,18 +9,15 @@ using SFA.DAS.RoatpFinance.Web.ApplyTypes.Apply;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Dashboard;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes.Export;
 using SFA.DAS.RoatpFinance.Web.Domain;
+using SFA.DAS.RoatpFinance.Web.Extensions;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
+using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
 using SFA.DAS.RoatpFinance.Web.ModelBinders;
 using SFA.DAS.RoatpFinance.Web.Services;
 using SFA.DAS.RoatpFinance.Web.Validators;
+using SFA.DAS.RoatpFinance.Web.Validators.Validation;
 using SFA.DAS.RoatpFinance.Web.ViewModels;
 using SFA.DAS.RoatpFinance.Web.ViewModels.Paging;
-using System.IO.Compression;
-using System.Net;
-using System.Net.Http.Headers;
-using SFA.DAS.RoatpFinance.Web.Extensions;
-using SFA.DAS.RoatpFinance.Web.Infrastructure.Models;
-using SFA.DAS.RoatpFinance.Web.Validators.Validation;
 
 namespace SFA.DAS.RoatpFinance.Web.Controllers
 {
@@ -69,7 +68,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
         {
             var applications = await _applyApiClient.GetOpenFinancialApplicationsForDownload();
 
-            var exportModel = Mapper.Map<List<RoatpFinancialSummaryExportItem>>(applications);
+            var exportModel = applications.Select(x => (RoatpFinancialSummaryExportItem)x).ToList();
 
             var bytearray = _csvExportService
                     .WriteCsvToByteArray<RoatpFinancialSummaryExportItem, RoatpFinancialSummaryExportCsvMap>(exportModel);
@@ -380,7 +379,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
          string removeClarificationFileName, RoatpApply application)
         {
             var model = new RemoveClarificationFileCommandModel
-                { UserId = HttpContext.User.UserId(), FileName = removeClarificationFileName };
+            { UserId = HttpContext.User.UserId(), FileName = removeClarificationFileName };
             var fileRemoved = await _applyApiClient.RemoveClarificationFile(applicationId, model);
 
 
@@ -501,7 +500,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
 
             var financialReviewDetails = await _applyApiClient.GetFinancialReviewDetails(application.ApplicationId);
             var viewModel = new RoatpFinancialApplicationViewModel(application, financialReviewDetails, parentCompanySection, activelyTradingSection, organisationTypeSection, financialSections);
-            
+
             return viewModel;
         }
 
