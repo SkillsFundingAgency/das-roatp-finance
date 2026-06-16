@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 
-namespace SFA.DAS.RoatpFinance.Web.Extensions;
+namespace SFA.DAS.RoatpFinance.Web.StartupExtensions;
 
 [ExcludeFromCodeCoverage]
 internal static class ServiceCollectionExtensions

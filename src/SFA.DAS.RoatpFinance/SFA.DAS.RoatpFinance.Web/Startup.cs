@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Primitives;
@@ -9,7 +8,6 @@ using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.DfESignIn.Auth.AppStart;
 using SFA.DAS.DfESignIn.Auth.Enums;
-using SFA.DAS.RoatpFinance.Web.Extensions;
 using SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients;
 using SFA.DAS.RoatpFinance.Web.ModelBinders;
 using SFA.DAS.RoatpFinance.Web.Services;
@@ -92,8 +90,6 @@ namespace SFA.DAS.RoatpFinance.Web
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-
-            services.AddValidatorsFromAssemblyContaining<Startup>();
 
             services.AddSession(opt => { opt.IdleTimeout = TimeSpan.FromHours(1); });
 
