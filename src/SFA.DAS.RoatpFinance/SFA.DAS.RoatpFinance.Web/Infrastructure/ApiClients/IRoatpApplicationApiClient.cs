@@ -20,19 +20,19 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
         [Get("/roatp-sequences")]
         Task<List<RoatpSequence>> GetRoatpSequences();
 
-        [Get("/financial/closedapplications")]
+        [Get("/financial/closedapplications?searchTerm={searchTerm}&sortColumn={sortColumn}&sortOrder={sortOrder}")]
         Task<List<RoatpFinancialSummaryItem>> GetClosedFinancialApplications(string searchTerm, string sortColumn, string sortOrder);
 
-        [Get("/financial/clarificationapplications")]
+        [Get("/financial/clarificationapplications?searchTerm={searchTerm}&sortColumn={sortColumn}&sortOrder={sortOrder}")]
         Task<List<RoatpFinancialSummaryItem>> GetClarificationFinancialApplications(string searchTerm, string sortColumn, string sortOrder);
 
-        [Get("/financial/openapplications")]
+        [Get("/financial/openapplications?searchTerm={searchTerm}&sortColumn={sortColumn}&sortOrder={sortOrder}")]
         Task<List<RoatpFinancialSummaryItem>> GetOpenFinancialApplications(string searchTerm, string sortColumn, string sortOrder);
 
         [Get("/financial/openapplicationsfordownload")]
         Task<List<RoatpFinancialSummaryDownloadItem>> GetOpenFinancialApplicationsForDownload();
 
-        [Get("/financial/statuscounts")]
+        [Get("/financial/statuscounts?searchTerm={searchTerm}")]
         Task<RoatpFinancialApplicationsStatusCounts> GetFinancialApplicationsStatusCounts(string searchTerm);
 
         [Post("/financial/{applicationId}/startreview")]
