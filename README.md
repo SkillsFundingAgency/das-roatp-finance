@@ -95,7 +95,7 @@ Data:
 
 * .Net 10.0
 * REDIS
-* NLog
+* Refit
 * Azure Table Storage
 * NUnit
 * Moq
