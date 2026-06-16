@@ -3,7 +3,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Primitives;
-using RestEase.HttpClientFactory;
+using Refit;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.DfESignIn.Auth.AppStart;
@@ -126,14 +126,26 @@ namespace SFA.DAS.RoatpFinance.Web
 
         private void ConfigureClients(IServiceCollection services)
         {
-            services.AddRestEaseClient<IQnaApiClient>(ApplicationConfiguration.QnaApiAuthentication.ApiBaseAddress)
+            services
+                .AddRefitClient<IQnaApiClient>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(ApplicationConfiguration.QnaApiAuthentication.ApiBaseAddress);
+                })
                 .AddHttpMessageHandler(() =>
-                    new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
+                    new InnerApiAuthenticationHeaderHandler(
+                        new AzureClientCredentialHelper(_configuration),
                         ApplicationConfiguration.QnaApiAuthentication.Identifier));
 
-            services.AddRestEaseClient<IRoatpApplicationApiClient>(ApplicationConfiguration.RoatpApplicationApiAuthentication.ApiBaseAddress)
+            services
+                .AddRefitClient<IRoatpApplicationApiClient>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(ApplicationConfiguration.RoatpApplicationApiAuthentication.ApiBaseAddress);
+                })
                 .AddHttpMessageHandler(() =>
-                    new InnerApiAuthenticationHeaderHandler(new AzureClientCredentialHelper(_configuration),
+                    new InnerApiAuthenticationHeaderHandler(
+                        new AzureClientCredentialHelper(_configuration),
                         ApplicationConfiguration.RoatpApplicationApiAuthentication.Identifier));
         }
 

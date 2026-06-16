@@ -384,7 +384,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
 
 
             var financialReviewDets = vm.FinancialReviewDetails;
-            if (fileRemoved.ResponseMessage.StatusCode == HttpStatusCode.OK)
+            if (fileRemoved.StatusCode == HttpStatusCode.OK)
             {
                 var clarificationFiles = financialReviewDets.ClarificationFiles;
                 var newClarificationFiles = new List<ClarificationFile>();
@@ -447,7 +447,7 @@ namespace SFA.DAS.RoatpFinance.Web.Controllers
                     var fileUploadedSuccessfully = await _applyApiClient.UploadClarificationFile(applicationId, content);
 
 
-                    if (fileUploadedSuccessfully.ResponseMessage.StatusCode == HttpStatusCode.OK)
+                    if (fileUploadedSuccessfully.StatusCode == HttpStatusCode.OK)
                     {
                         if (financialReviewDets.ClarificationFiles == null)
                             financialReviewDets.ClarificationFiles = new List<ClarificationFile>();

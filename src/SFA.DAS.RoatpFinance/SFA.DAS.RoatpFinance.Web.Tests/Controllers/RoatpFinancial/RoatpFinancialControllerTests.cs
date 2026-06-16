@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using RestEase;
+using Refit;
 using SFA.DAS.QnA.Api.Types;
 using SFA.DAS.QnA.Api.Types.Page;
 using SFA.DAS.RoatpFinance.Web.ApplyTypes;
@@ -307,7 +307,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             _applicationApplyApiClient.Setup(x =>
                     x.UploadClarificationFile(_applicationId, It.IsAny<MultipartFormDataContent>()))
-                .ReturnsAsync(new Response<string>("", new HttpResponseMessage(HttpStatusCode.OK), () => ""));
+                .ReturnsAsync(new ApiResponse<string>(new HttpResponseMessage(HttpStatusCode.OK), string.Empty, new RefitSettings()));
 
 
             _financialReviewDetails = new FinancialReviewDetails
@@ -409,7 +409,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
             var model = new RemoveClarificationFileCommandModel { UserId = "", FileName = fileToBeRemoved };
             _applicationApplyApiClient.Setup(x =>
                     x.RemoveClarificationFile(It.IsAny<Guid>(), It.IsAny<RemoveClarificationFileCommandModel>()))
-                .ReturnsAsync(new Response<string>("", new HttpResponseMessage(HttpStatusCode.OK), () => ""));
+                .ReturnsAsync(new ApiResponse<string>(new HttpResponseMessage(HttpStatusCode.OK), string.Empty, new RefitSettings()));
 
             _applicationApplyApiClient.Setup(x => x.GetFinancialReviewDetails(_applicationId)).ReturnsAsync(new FinancialReviewDetails());
 
@@ -487,7 +487,7 @@ namespace SFA.DAS.RoatpFinance.Web.Tests.Controllers.RoatpFinancial
 
             _applicationApplyApiClient.Setup(x =>
                     x.UploadClarificationFile(_applicationId, It.IsAny<MultipartFormDataContent>()))
-                .ReturnsAsync(new Response<string>("", new HttpResponseMessage(HttpStatusCode.OK), () => ""));
+                .ReturnsAsync(new ApiResponse<string>(new HttpResponseMessage(HttpStatusCode.OK), string.Empty, new RefitSettings()));
 
 
             _financialReviewDetails = new FinancialReviewDetails
