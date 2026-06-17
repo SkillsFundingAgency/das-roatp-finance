@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Primitives;
 using Refit;
 using SFA.DAS.Api.Common.Infrastructure;
@@ -102,7 +101,7 @@ namespace SFA.DAS.RoatpFinance.Web
 
             services.AddOpenTelemetryRegistration(_configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]!);
 
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddHttpContextAccessor();
 
             ConfigureClients(services);
 
@@ -151,8 +150,6 @@ namespace SFA.DAS.RoatpFinance.Web
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddTransient(x => ApplicationConfiguration);
 
             services.AddTransient<ISearchTermValidator, SearchTermValidator>();
