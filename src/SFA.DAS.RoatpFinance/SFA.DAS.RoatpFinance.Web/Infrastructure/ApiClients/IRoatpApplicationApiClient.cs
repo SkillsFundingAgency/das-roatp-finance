@@ -9,13 +9,13 @@ namespace SFA.DAS.RoatpFinance.Web.Infrastructure.ApiClients
     public interface IRoatpApplicationApiClient
     {
         [Get("/application/{applicationId}")]
-        Task<RoatpApply> GetApplication(Guid applicationId);
+        Task<ApiResponse<RoatpApply>> GetApplication(Guid applicationId);
 
         [Get("/application/{applicationId}/contact")]
-        Task<RoatpContact> GetContactForApplication(Guid applicationId);
+        Task<ApiResponse<RoatpContact>> GetContactForApplication(Guid applicationId);
 
         [Get("/application/{applicationId}/financialreviewdetails")]
-        Task<FinancialReviewDetails> GetFinancialReviewDetails(Guid applicationId);
+        Task<ApiResponse<FinancialReviewDetails>> GetFinancialReviewDetails(Guid applicationId);
 
         [Get("/roatp-sequences")]
         Task<List<RoatpSequence>> GetRoatpSequences();
